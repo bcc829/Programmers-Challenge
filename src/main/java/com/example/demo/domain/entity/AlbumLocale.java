@@ -13,7 +13,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class AlbumLocale {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(nullable = false)
     String locale;

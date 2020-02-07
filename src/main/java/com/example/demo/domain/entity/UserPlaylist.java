@@ -15,7 +15,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class UserPlaylist {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(nullable = false)
     long userId;

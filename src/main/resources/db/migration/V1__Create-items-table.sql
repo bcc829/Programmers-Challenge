@@ -1,62 +1,65 @@
---
--- V2: Create Items TABLE
---
---
-CREATE TABLE ALBUM (
-	ID BIGINT NOT NULL,
-	REG_DATE TIMESTAMP,
-	TITLE VARCHAR(255) NOT NULL,
-	UPDATE_DATE TIMESTAMP,
-	CONSTRAINT CONSTRAINT_3 PRIMARY KEY (ID)
-);
-CREATE UNIQUE INDEX PRIMARY_KEY_3 ON ALBUM (ID);
+create table my_database.album (
+       id bigint not null auto_increment,
+        reg_date datetime,
+        title varchar(255) not null,
+        update_date datetime,
+        primary key (id)
+)
 
-CREATE TABLE ALBUM_LOCALE (
-	ID BIGINT NOT NULL,
-	LOCALE VARCHAR(255) NOT NULL,
-	REG_DATE TIMESTAMP,
-	UPDATE_DATE TIMESTAMP,
-	ALBUM_ID BIGINT,
-	CONSTRAINT CONSTRAINT_C PRIMARY KEY (ID),
-	CONSTRAINT FKRJRIRIY42SGULE6X0JEWODVGG FOREIGN KEY (ALBUM_ID) REFERENCES ALBUM(ID) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE INDEX FKRJRIRIY42SGULE6X0JEWODVGG_INDEX_C ON ALBUM_LOCALE (ALBUM_ID);
-CREATE UNIQUE INDEX PRIMARY_KEY_C ON ALBUM_LOCALE (ID);
+create table my_database.album_locale (
+   id bigint not null auto_increment,
+    locale varchar(255) not null,
+    reg_date datetime,
+    update_date datetime,
+    album_id bigint,
+    primary key (id)
+)
 
-CREATE TABLE SONG (
-	ID BIGINT NOT NULL,
-	LENGTH INTEGER NOT NULL,
-	REG_DATE TIMESTAMP,
-	TITLE VARCHAR(255) NOT NULL,
-	TRACK INTEGER NOT NULL,
-	UPDATE_DATE TIMESTAMP,
-	ALBUM_ID BIGINT,
-	CONSTRAINT CONSTRAINT_2 PRIMARY KEY (ID),
-	CONSTRAINT FKRCJMK41YQJ3PL3IYII40NIAB0 FOREIGN KEY (ALBUM_ID) REFERENCES ALBUM(ID) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE INDEX FKRCJMK41YQJ3PL3IYII40NIAB0_INDEX_2 ON SONG (ALBUM_ID);
-CREATE UNIQUE INDEX PRIMARY_KEY_2 ON SONG (ID);
+create table my_database.song (
+       id bigint not null auto_increment,
+        length integer not null,
+        reg_date datetime,
+        title varchar(255) not null,
+        track integer not null,
+        update_date datetime,
+        album_id bigint,
+        primary key (id)
+)
 
-CREATE TABLE USER_PLAYLIST (
-	ID BIGINT NOT NULL,
-	REG_DATE TIMESTAMP,
-	TITLE VARCHAR(255) NOT NULL,
-	UPDATE_DATE TIMESTAMP,
-	USER_ID BIGINT NOT NULL,
-	CONSTRAINT CONSTRAINT_B PRIMARY KEY (ID)
-);
-CREATE UNIQUE INDEX PRIMARY_KEY_B ON USER_PLAYLIST (ID);
+create table my_database.user_playlist (
+       id bigint not null auto_increment,
+        reg_date datetime,
+        title varchar(255) not null,
+        update_date datetime,
+        user_id bigint not null,
+        primary key (id)
+)
 
-CREATE TABLE USER_PLAYLIST_SONG (
-	ID BIGINT NOT NULL,
-	REG_DATE TIMESTAMP,
-	UPDATE_DATE TIMESTAMP,
-	SONG_ID BIGINT,
-	USER_PLAYLIST_ID BIGINT,
-	CONSTRAINT CONSTRAINT_BD PRIMARY KEY (ID),
-	CONSTRAINT FKCSOVBE27GGI9OFJS3A48YVO47 FOREIGN KEY (USER_PLAYLIST_ID) REFERENCES USER_PLAYLIST(ID) ON DELETE RESTRICT ON UPDATE RESTRICT,
-	CONSTRAINT FKP3X0LGSYL9EGWX2S7755SBKJA FOREIGN KEY (SONG_ID) REFERENCES SONG(ID) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE INDEX FKCSOVBE27GGI9OFJS3A48YVO47_INDEX_B ON USER_PLAYLIST_SONG (USER_PLAYLIST_ID);
-CREATE INDEX FKP3X0LGSYL9EGWX2S7755SBKJA_INDEX_B ON USER_PLAYLIST_SONG (SONG_ID);
-CREATE UNIQUE INDEX PRIMARY_KEY_BD ON USER_PLAYLIST_SONG (ID);
+create table my_database.user_playlist_song (
+       id bigint not null auto_increment,
+        reg_date datetime,
+        update_date datetime,
+        song_id bigint,
+        user_playlist_id bigint,
+        primary key (id)
+)
+
+alter table my_database.album_locale
+       add constraint FKrjririy42sgule6x0jewodvgg
+       foreign key (album_id)
+       references album (id)
+
+alter table my_database.song
+   add constraint FKrcjmk41yqj3pl3iyii40niab0
+   foreign key (album_id)
+   references album (id)
+
+alter table my_database.user_playlist_song
+   add constraint FKp3x0lgsyl9egwx2s7755sbkja
+   foreign key (song_id)
+   references song (id)
+
+alter table my_database.user_playlist_song
+   add constraint FKcsovbe27ggi9ofjs3a48yvo47
+   foreign key (user_playlist_id)
+   references user_playlist (id)
