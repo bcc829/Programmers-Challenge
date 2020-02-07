@@ -4,7 +4,7 @@ create table my_database.album (
         title varchar(255) not null,
         update_date datetime,
         primary key (id)
-)
+);
 
 create table my_database.album_locale (
    id bigint not null auto_increment,
@@ -13,7 +13,7 @@ create table my_database.album_locale (
     update_date datetime,
     album_id bigint,
     primary key (id)
-)
+);
 
 create table my_database.song (
        id bigint not null auto_increment,
@@ -24,7 +24,7 @@ create table my_database.song (
         update_date datetime,
         album_id bigint,
         primary key (id)
-)
+);
 
 create table my_database.user_playlist (
        id bigint not null auto_increment,
@@ -33,7 +33,7 @@ create table my_database.user_playlist (
         update_date datetime,
         user_id bigint not null,
         primary key (id)
-)
+);
 
 create table my_database.user_playlist_song (
        id bigint not null auto_increment,
@@ -42,24 +42,24 @@ create table my_database.user_playlist_song (
         song_id bigint,
         user_playlist_id bigint,
         primary key (id)
-)
+);
 
 alter table my_database.album_locale
        add constraint FKrjririy42sgule6x0jewodvgg
        foreign key (album_id)
-       references album (id)
+       references album (id);
 
 alter table my_database.song
    add constraint FKrcjmk41yqj3pl3iyii40niab0
    foreign key (album_id)
-   references album (id)
+   references album (id);
 
 alter table my_database.user_playlist_song
    add constraint FKp3x0lgsyl9egwx2s7755sbkja
    foreign key (song_id)
-   references song (id)
+   references song (id);
 
 alter table my_database.user_playlist_song
    add constraint FKcsovbe27ggi9ofjs3a48yvo47
    foreign key (user_playlist_id)
-   references user_playlist (id)
+   references user_playlist (id);
