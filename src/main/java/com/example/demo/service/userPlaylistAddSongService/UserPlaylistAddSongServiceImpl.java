@@ -10,6 +10,7 @@ import com.example.demo.domain.entity.UserPlaylistSong;
 import com.example.demo.repository.album.AlbumRepository;
 import com.example.demo.repository.song.SongRepository;
 import com.example.demo.repository.userPlaylist.UserPlayListRepository;
+import com.example.demo.repository.userPlaylistSong.UserPlayListSongRepository;
 import com.example.demo.service.searchAlbumAndSongService.SearchAlbumAndSongServiceImpl;
 import com.example.demo.util.ModelMapperUtil;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -30,17 +30,21 @@ public class UserPlaylistAddSongServiceImpl implements UserPlaylistAddSongServic
 
     private AlbumRepository albumRepository;
 
+    private UserPlayListSongRepository userPlayListSongRepository;
+
     private ModelMapperUtil modelMapperUtil;
 
     private Logger logger = LoggerFactory.getLogger(SearchAlbumAndSongServiceImpl.class);
 
     public UserPlaylistAddSongServiceImpl(UserPlayListRepository userPlayListRepository,
                                           SongRepository songRepository,
-                                          ModelMapperUtil modelMapperUtil,
-                                          AlbumRepository albumRepository) {
-        this.userPlayListRepository = userPlayListRepository;
+                                          AlbumRepository albumRepository,
+                                          UserPlayListSongRepository userPlayListSongRepository,
+                                          ModelMapperUtil modelMapperUtil) {
         this.songRepository = songRepository;
         this.albumRepository = albumRepository;
+        this.userPlayListRepository = userPlayListRepository;
+        this.userPlayListSongRepository = userPlayListSongRepository;
         this.modelMapperUtil = modelMapperUtil;
     }
 
@@ -56,9 +60,9 @@ public class UserPlaylistAddSongServiceImpl implements UserPlaylistAddSongServic
 
         UserPlaylistSong userPlaylistSong = new UserPlaylistSong();
         userPlaylistSong.setSong(song);
+        userPlaylistSong.setUserPlaylist(userPlaylist);
 
-        userPlaylist.addUserPlaylistSong(userPlaylistSong);
-        userPlaylist = userPlayListRepository.save(userPlaylist);
+        userPlayListSongRepository.save(userPlaylistSong);
 
         UserPlaylistDto result = modelMapperUtil.convertToDomain(userPlaylist, UserPlaylistDto.class);
 
@@ -79,10 +83,10 @@ public class UserPlaylistAddSongServiceImpl implements UserPlaylistAddSongServic
         for(Song song: album.getSongs()) {
             UserPlaylistSong userPlaylistSong = new UserPlaylistSong();
             userPlaylistSong.setSong(song);
-            userPlaylist.addUserPlaylistSong(userPlaylistSong);
-        }
+            userPlaylistSong.setUserPlaylist(userPlaylist);
 
-        userPlaylist = userPlayListRepository.save(userPlaylist);
+            userPlayListSongRepository.save(userPlaylistSong);
+        }
 
         UserPlaylistDto result = modelMapperUtil.convertToDomain(userPlaylist, UserPlaylistDto.class);
 
